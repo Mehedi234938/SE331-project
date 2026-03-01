@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+<style>
+body{font-family:Arial;background:#f4f6f9;text-align:center;}
+.box{width:350px;margin:100px auto;padding:20px;background:white;border-radius:10px;}
+input,select{padding:10px;width:80%;margin:10px;}
+button{padding:10px;background:#2196f3;color:white;border:none;}
+</style>
+</head>
+<body>
+
+<div class="box">
+<h2>Login</h2>
+
+<select id="role">
+<option value="student">Student</option>
+<option value="admin">Admin</option>
+</select>
+
+<input type="text" id="user" placeholder="Username">
+<input type="password" id="pass" placeholder="Password">
+
+<button onclick="login()">Login</button>
+</div>
+
+<script>
+function login(){
+    const role=document.getElementById("role").value;
+    const user=document.getElementById("user").value;
+    const pass=document.getElementById("pass").value;
+
+    if(role==="admin" && user==="admin" && pass==="123"){
+        window.location="admin.html";
+    }
+    else if(role==="student" && user!=="" && pass!==""){
+        window.location="index.html";
+    }
+    else{
+        alert("Invalid Login");
+    }
+}
+</script>
+
+</body>
+</html>

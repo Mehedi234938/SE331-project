@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Enrollment</title>
+<style>
+body{font-family:Arial;text-align:center;background:#f4f6f9;}
+.box{width:400px;margin:80px auto;padding:20px;background:white;border-radius:10px;}
+input{padding:10px;width:70%;}
+button{padding:8px 15px;margin:5px;background:#2196f3;color:white;border:none;}
+li{list-style:none;margin:8px;}
+</style>
+</head>
+<body>
+
+<div class="box">
+<h2>Student Enrollment</h2>
+
+<button onclick="logout()">Logout</button><br><br>
+
+<input type="text" id="name" placeholder="Enter student name">
+<button onclick="enroll()">Enroll</button>
+
+<h3>Students</h3>
+<ul id="list"></ul>
+</div>
+
+<script>
+
+function enroll(){
+    const name=document.getElementById("name").value;
+
+    fetch("http://127.0.0.1:5000/enroll",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({name:name})
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        if(data.status==="success"){
+            alert("Section "+data.section);
+        }else{
+            alert("All Sections Full");
+        }
+        load();
+    });
+}
+
+function load(){
+    fetch("http://127.0.0.1:5000/students")
+    .then(res=>res.json())
+    .then(data=>{
+        let list=document.getElementById("list");
+        list.innerHTML="";
+        data.forEach(s=>{
+            list.innerHTML+=`
+            <li>${s.name} - Section ${s.section}
+            <button onclick="del('${s.name}')">Delete</button></li>`;
+        });
+    });
+}
+
+function del(name){
+    fetch("http://127.0.0.1:5000/delete",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({name:name})
+    }).then(()=>load());
+}
+
+function logout(){
+    window.location="login.html";
+}
+
+load();
+</script>
+
+</body>
+</html>
