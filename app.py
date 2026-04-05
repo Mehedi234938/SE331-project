@@ -7,7 +7,6 @@ import uuid
 app = Flask(__name__)
 CORS(app)
 
-# ---------- DB ----------
 def db():
     return sqlite3.connect("database.db")
 
@@ -37,14 +36,12 @@ def init():
 
 init()
 
-# ---------- HELPER ----------
 def hash_pass(p):
     return hashlib.sha256(p.encode()).hexdigest()
 
 def gen_uid():
     return str(uuid.uuid4())[:8]
 
-# ---------- SIGNUP ----------
 @app.route("/signup", methods=["POST"])
 def signup():
     data=request.json
@@ -54,15 +51,12 @@ def signup():
 
     conn=db()
     c=conn.cursor()
-
-    c.execute("INSERT INTO users(uid,password,role) VALUES (?,?,?)",
-              (uid,password,role))
+    c.execute("INSERT INTO users(uid,password,role) VALUES (?,?,?)",(uid,password,role))
     conn.commit()
     conn.close()
 
     return jsonify({"uid":uid})
 
-# ---------- LOGIN ----------
 @app.route("/login", methods=["POST"])
 def login():
     data=request.json
@@ -71,7 +65,6 @@ def login():
 
     conn=db()
     c=conn.cursor()
-
     c.execute("SELECT role FROM users WHERE uid=? AND password=?", (uid,password))
     user=c.fetchone()
     conn.close()
@@ -80,7 +73,6 @@ def login():
         return jsonify({"status":"ok","role":user[0]})
     return jsonify({"status":"fail"})
 
-# ---------- RESET ----------
 @app.route("/reset", methods=["POST"])
 def reset():
     data=request.json
@@ -89,14 +81,12 @@ def reset():
 
     conn=db()
     c=conn.cursor()
-
     c.execute("UPDATE users SET password=? WHERE uid=?", (new_pass,uid))
     conn.commit()
     conn.close()
 
     return jsonify({"status":"updated"})
 
-# ---------- ENROLL ----------
 @app.route("/enroll", methods=["POST"])
 def enroll():
     name=request.json["name"]
@@ -115,18 +105,15 @@ def enroll():
     conn.close()
     return jsonify({"section":"Full"})
 
-# ---------- GET ----------
 @app.route("/students", methods=["GET"])
 def students():
     conn=db()
     c=conn.cursor()
     c.execute("SELECT id,name,section FROM students")
-
     data=[{"id":r[0],"name":r[1],"section":r[2]} for r in c.fetchall()]
     conn.close()
     return jsonify(data)
 
-# ---------- DELETE ----------
 @app.route("/delete/<int:id>", methods=["DELETE"])
 def delete(id):
     conn=db()
