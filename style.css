@@ -1,0 +1,45 @@
+body{
+    margin:0;
+    font-family:Arial;
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+}
+
+.navbar{
+    background:#222;
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.container{
+    max-width:400px;
+    margin:80px auto;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    text-align:center;
+}
+
+input,select{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    background:#2196f3;
+    color:white;
+    border:none;
+}
+
+.list-item{
+    background:#eee;
+    padding:10px;
+    margin:5px;
+}
