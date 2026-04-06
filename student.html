@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Panel</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            width: 50%;
+            border-radius: 10px;
+        }
+
+        button {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Student Panel</h1>
+
+<div class="container">
+
+    <div class="box">
+        <h2>Add Student</h2>
+
+        <input id="name" placeholder="Enter name">
+        <button onclick="addStudent()">Add</button>
+
+        <h3>Student List</h3>
+        <ul id="list"></ul>
+    </div>
+
+    <div class="box">
+        <h2>Auto Section Assign</h2>
+        <ul id="enroll"></ul>
+    </div>
+
+</div>
+
+<script>
+let enrolled = {};
+let sectionCount = {"A":0,"B":0};
+
+function addStudent() {
+    let name = document.getElementById("name").value;
+
+    if(name === "") return;
+
+    let section;
+
+    if(sectionCount["A"] < 2){
+        section = "A";
+    } else if(sectionCount["B"] < 2){
+        section = "B";
+    } else {
+        alert("All sections full!");
+        return;
+    }
+
+    sectionCount[section]++;
+    enrolled[name] = section;
+
+    let li = document.createElement("li");
+    li.id = "student-" + name;
+    li.innerHTML = name + 
+        ` <button onclick="deleteStudent('${name}')">Delete</button>`;
+    document.getElementById("list").appendChild(li);
+
+    let li2 = document.createElement("li");
+    li2.id = "enroll-" + name;
+    li2.innerText = name + " → Section " + section;
+    document.getElementById("enroll").appendChild(li2);
+
+    document.getElementById("name").value = "";
+}
+
+function deleteStudent(name) {
+    let section = enrolled[name];
+
+    if(section){
+        sectionCount[section]--;
+        delete enrolled[name];
+    }
+
+    let s = document.getElementById("student-" + name);
+    if(s) s.remove();
+
+    let e = document.getElementById("enroll-" + name);
+    if(e) e.remove();
+}
+</script>
+
+</body>
+</html>

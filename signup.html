@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+<div class="card">
+
+<h2>Signup</h2>
+
+<input id="username" placeholder="Username">
+
+<select id="role">
+<option value="user">Student</option>
+<option value="admin">Admin</option>
+</select>
+
+<input id="pass" placeholder="Password">
+
+<button onclick="signup()">Signup</button>
+
+</div>
+</div>
+
+<script>
+function signup(){
+fetch("http://127.0.0.1:5000/signup",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+    username:username.value,
+    password:pass.value,
+    role:role.value
+})
+})
+.then(r=>r.json())
+.then(d=>{
+    alert("Your UID: "+d.uid);
+});
+}
+</script>
+
+</body>
+</html>
