@@ -1,0 +1,20 @@
+<h2>Reset Password</h2>
+
+<input id="uid" placeholder="UID">
+<input id="pass" placeholder="New Password">
+
+<button onclick="reset()">Reset</button>
+
+<script>
+function reset(){
+fetch("http://127.0.0.1:5000/reset",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+    uid:uid.value,
+    password:pass.value
+})
+})
+.then(()=>alert("Updated"));
+}
+</script>
